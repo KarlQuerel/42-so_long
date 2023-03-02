@@ -6,147 +6,90 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:56:10 by kquerel           #+#    #+#             */
-/*   Updated: 2023/02/23 21:57:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:02:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // regarder strerror et perror et exit
 // backtracking ?
-//etape 50 check map si elle est bien fermee, si il y a un seul P, si il y a au moins un C et un E
 
 #include "../includes/so_long.h"
 
 /* Displays score, moves and fixed text on the window */
 void	ft_put_score(t_data *data)
 {
-	char	*move;
-	char	*move_final;
-	//char	*score;
-	//char	*score_final;
+	char	*move_or_score;
+	char	*final_text;
 
-	move = ft_itoa(data->moves);
-	move_final = ft_strjoin("MOVES = ", move);
+	move_or_score = ft_itoa(data->count.moves);
+	final_text = ft_strjoin("MOVES = ", move_or_score);
 	mlx_set_font(data->mlx, data->win, "10x20");
-	mlx_string_put(data->mlx, data->win, 80, 40, 0x00BFFF, move_final);
-	move = ft_itoa(data->moves);
-	move_final = ft_strjoin("CHOCOLATES = ", move);
+	mlx_string_put(data->mlx, data->win, 80, 40, 0x00BFFF, final_text);
+	move_or_score = ft_itoa(data->count.score);
+	final_text = ft_strjoin("CHOCOLATES = ", move_or_score);
 	mlx_set_font(data->mlx, data->win, "10x20");
-	mlx_string_put(data->mlx, data->win, 80, 60, 0x5FFB17, move_final);
+	mlx_string_put(data->mlx, data->win, 80, 60, 0x5FFB17, final_text);
 	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, map_size_x / 7, 40, 0xDAEE01, "KARL IS HUNGRY...");
 	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, map_size_x / 5, 60, 0x5FFB17, "FEED HIM!");
-	free (move);
-	free (move_final);
+	free(move_or_score);
+	free(final_text);
 }
-
-//NEEDS to swap les valeurs entre P et le reste dans data->map.map puis faire appel a ft_image_map
-/* Manages keys pressed - player movements and esc exit */
-// int	ft_key(int keycode, t_data *data)
-// {
-// 	static int pos_x = 0;
-// 	static int pos_y = 0;
-// 	int	new_pos;
-// 	if (keycode == right_k || keycode == right_a)
-// 	{
-// 		new_pos = pos_x + data->img.img_width;
-// 		while (pos_x <= new_pos)
-// 		{
-// 			mlx_put_image_to_window(data->mlx, data->win, data->img.img_player_1, pos_x, pos_y);
-// 			pos_x++;
-// 		}
-// 	}
-// 	else if (keycode == left_k || keycode == left_a)
-// 	{
-// 		new_pos = pos_x - data->img.img_width;
-// 		while (pos_x >= new_pos)
-// 		{
-// 			mlx_put_image_to_window(data->mlx, data->win, data->img.img_player_1, pos_x, pos_y);
-// 			pos_x--;
-// 		}
-// 	}
-// 	else if (keycode == down_k || keycode == down_a)
-// 	{
-// 		new_pos = pos_y + data->img.img_height;
-// 		while (pos_y <= new_pos)
-// 		{
-// 			mlx_put_image_to_window(data->mlx, data->win, data->img.img_player_1, pos_x, pos_y);
-// 			pos_y++;
-// 		}
-// 	}
-// 	else if (keycode == up_k || keycode == up_a)
-// 	{
-// 		new_pos = pos_y - data->img.img_height;
-// 		while (pos_y >= new_pos)
-// 		{
-// 			mlx_put_image_to_window(data->mlx, data->win, data->img.img_player_1, pos_x, pos_y);
-// 			pos_y--;
-// 		}
-// 	}
-// 	if (keycode == left_a || keycode == left_k || keycode == right_a || keycode == right_k || keycode == down_a || keycode == down_k || keycode == up_a || keycode == up_k)
-// 	{
-// 		data->moves++;
-// 		ft_printf("Moves = %d\n", data->moves);
-// 		//ft_put_score(data);
-// 	}
-// 	if (keycode == XK_Escape)
-// 	{
-// 		ft_printf("You quit the game!\n");
-// 		// mlx_destroy_image(data->mlx, img->img_player_1);
-// 		// mlx_destroy_image(data->mlx, img->img_wall);
-// 		mlx_destroy_window(data->mlx, data->win);
-// 		mlx_destroy_display(data->mlx);
-// 		//free(data.mlx);
-// 		exit(0);
-// 	}
-// 	return (0);
-// }
 
 /* Destroys images, windows and displays and frees memory */
 void	ft_free(t_data *data)
 {
-	mlx_destroy_image(data->mlx, data->img.img_player_1);
-	mlx_destroy_image(data->mlx, data->img.img_wall);
-	mlx_destroy_image(data->mlx, data->img.img_ground);
-	mlx_destroy_image(data->mlx, data->img.img_col_1);
-	mlx_destroy_image(data->mlx, data->img.img_exit);
+	mlx_destroy_image(data->mlx, data->img.player_1);
+	mlx_destroy_image(data->mlx, data->img.wall);
+	mlx_destroy_image(data->mlx, data->img.ground);
+	mlx_destroy_image(data->mlx, data->img.col_1);
+	mlx_destroy_image(data->mlx, data->img.exit_closed);
+	mlx_destroy_image(data->mlx, data->img.exit_open);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
+	//free(data->win);
 }
 
-void	ft_move_all(t_data *data, int new_x, int new_y)
+/* Swaps a "ground" tile and the player position. New positions are given by the ft_key_press function and checks if the swap is possible or not */
+void	ft_move(t_data *data, int new_x, int new_y)
 {
 	int	cur_x;
 	int	cur_y;
-
-	cur_x = data->coords.x / data->img.img_height;
-	cur_y = data->coords.y / data->img.img_width;
-
-	new_x = 0;
-	new_y = 0;
-
-	//data->map.map[cur_x + new_x][cur_y + new_y] = data->img.img_player_1; //->peut pas assign img au coordonne de map 
-	// data->map.map[cur_x][cur_y] = data->img.img_ground;
-
-	// cur_x = data->coords.x / 80;
-	// cur_y = data->coords.y / 80;
-	//Faire une condition qui verifie si la direction sur laquelle on va est un mur ou pas
-	//if (data->map.map[cur_x + new_x][cur_y + new_y] == '1')
-		//on swap pas
+	
+	cur_x = data->coords.x / data->img.height;
+	cur_y = data->coords.y / data->img.width;
+	if (data->map.map[cur_x + new_x][cur_y + new_y] == '0')
+	{
+		data->map.map[cur_x + new_x][cur_y + new_y] = 'P';
+		data->map.map[cur_x][cur_y] = '0';
+		data->count.moves++;
+	}
+	else if(data->map.map[cur_x + new_x][cur_y + new_y] == 'C')
+	{
+		data->map.map[cur_x + new_x][cur_y + new_y] = 'P';
+		data->map.map[cur_x][cur_y] = '0';
+		data->count.score++;
+		data->count.col--;
+	}
+	ft_put_images_to_map(data);
 }
 
-/* Calls move function while giving it according arguments to move the player */
+/* Calls move function while giving it according arguments to move the player and handles window closing when pressing ESC */
 int	ft_key_press(int keycode, t_data *data)
 {
-	if (keycode == right_a || keycode == right_k)
-		ft_move_all(data, 0, 1);
-	if (keycode == left_a || keycode == left_k)
-		ft_move_all(data, 0, -1);
-	if (keycode == up_a || keycode == up_k)
-		ft_move_all(data, 1, 0);
-	if (keycode == down_a || keycode == down_k)
-		ft_move_all(data, -1, 0);
+	if (keycode == RIGHT_K || keycode == D_K)
+		ft_move(data, 0, 1);
+	if (keycode == LEFT_K || keycode == A_K)
+		ft_move(data, 0, -1);
+	if (keycode == UP_K || keycode == W_K)
+		ft_move(data, -1, 0);
+	if (keycode == DOWN_K || keycode == S_K)
+		ft_move(data, 1, 0);
+	if (keycode == RIGHT_K || keycode == D_K || keycode == LEFT_K || keycode == A_K ||
+		keycode == UP_K || keycode == W_K || keycode == DOWN_K || keycode == S_K)
+		ft_put_score(data);
 	if (keycode == XK_Escape)
 	{
 		ft_printf("You quit the game!\n");
@@ -188,14 +131,13 @@ void    ft_maps(t_data *data)
 	int fd;
 	char *file;
 	char *line;
-	char *tmp;
-	// int	i;
+	char *tmp; 
 
 	file = "maps/test.ber";
     fd = open(file, O_RDONLY);
     if (fd == -1)
     {
-        ft_printf("Error while opening the map!\n");
+        ft_printf("Error\nCan't open the map!\n");
         exit (1);
     }
 	line = get_next_line(fd);
@@ -208,12 +150,6 @@ void    ft_maps(t_data *data)
 	}
     free(line);
     data->map.map = ft_split(tmp, '\n');
-    // i = 0;
-	// while (data->map.map[i] != NULL)
-	// {
-	// 	ft_printf("map = %s\n", data->map.map[i]);
-	// 	i++;
-	// }
 	free(tmp);
 }
 
@@ -235,10 +171,14 @@ int	main(/* int argc, char **argv */)
 	if (ft_check_images(&data) == 1)
 		return (1);
 	ft_maps(&data);
-	if (ft_check_map(&data) == 1)
+	if (ft_check_map_contents(&data) == 1)
+		return (1);
+	if (ft_check_map_format(&data) == 1)
 		return (1);
 	ft_put_images_to_map(&data);
-	//data.moves = 0;
+	ft_put_score(&data);
+	data.count.moves = 0;
+	data.count.score = 0;
 	mlx_hook(data.win, 02, KeyPressMask, ft_put_images_to_map, &data);
 	mlx_hook(data.win, 02, KeyPressMask, ft_key_press, &data);
 	mlx_hook(data.win, 17, StructureNotifyMask, cross_close, &data);

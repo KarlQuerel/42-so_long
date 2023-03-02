@@ -12,7 +12,8 @@ PATH_SRCS	= srcs
 SRCS	= ${PATH_SRCS}/so_long.c	\
 		${PATH_SRCS}/maps.c	\
 		${PATH_SRCS}/check_errors.c \
-
+		${PATH_SRCS}/movement.c \
+		
 OBJS	= ${SRCS:.c=.o}
 
 CC	= cc
