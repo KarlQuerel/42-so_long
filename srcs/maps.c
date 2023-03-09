@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 18:44:44 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/02 19:25:04 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/09 19:04:20 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // verifier longueur et largeur de la map -> que le y de map [0][y] et map [x][y] soit le meme
 
 /* Gets image from files */
-int	ft_get_images(t_data *data)
+void	ft_get_images(t_data *data)
 {	
 	data->img.path_player_1 = "textures/player.xpm";
 	data->img.player_1 = mlx_xpm_file_to_image(data->mlx, data->img.path_player_1, &data->img.width, &data->img.height);
@@ -29,11 +29,10 @@ int	ft_get_images(t_data *data)
 	data->img.exit_closed = mlx_xpm_file_to_image(data->mlx, data->img.path_exit_closed, &data->img.width, &data->img.height);
 	data->img.path_exit_open = "textures/exit_open.xpm";
 	data->img.exit_open = mlx_xpm_file_to_image(data->mlx, data->img.path_exit_open, &data->img.width, &data->img.height);
-	return (0);
 }
 
-/* Checks if walls are enclosing the map correctly */
-int	ft_check_map_format(t_data *data)
+/* Checks if walls are enclosing the map correctly by calling ft_check_lines and ft_check_columns functions */
+void	ft_check_map_format(t_data *data)
 {
 	data->coords.x = 0;
 	while (data->map.map[data->coords.x] != NULL)
@@ -41,55 +40,71 @@ int	ft_check_map_format(t_data *data)
 	data->coords.y = 0;
 	while (data->map.map[0][data->coords.y] != '\0')
 		data->coords.y++;
-	if (ft_check_lines(data, 0) == 1 || ft_check_lines(data, data->coords.x - 1) == 1
-		|| ft_check_columns(data, 0) == 1 || ft_check_columns(data, data->coords.y - 1) == 1)
-	{
-		ft_printf("Error\nOpen map! The chocolates will escape...\n");
-		return (1);
-	}
-	return (0);
+	ft_check_rectangular(data);
+	ft_check_lines(data, 0);
+	ft_check_lines(data, data->coords.x - 1);
+	ft_check_columns(data, 0);
+	ft_check_columns(data, data->coords.y - 1);
 }
 
 // /* Checks if the map is rectangular */
 // takes the first row and column size and compare it to everything
-int	ft_check_rectangular(t_data *data)
+void	ft_check_rectangular(t_data *data)
 {
 	int	x;
 	int	y;
-
-	x = ft_check_lines(data, 0);
+	int	check_y;
+	
+	x = 0;
 	y = 0;
-	return (0);
+	while (data->map.map[0][y] != '\0')
+		y++;
+	while (data->map.map[x] != NULL)
+	{
+		check_y = 0;
+		while (data->map.map[x][check_y] != '\0')
+			check_y++;
+		if(check_y != y)
+		{
+			ft_printf("Error\nThe map is not rectangular!\n");
+			exit (1);
+		}
+		x++;
+	}
 }
 
-/* Checks if walls are present on column number n */
-int	ft_check_columns(t_data *data, int n)
+/* Checks if walls (1) are present on column number n */
+void	ft_check_columns(t_data *data, int n)
 {	
 	data->coords.x = 0;
 	while (data->map.map[data->coords.x] != NULL)
 	{
 		if (data->map.map[data->coords.x][n] != '1')
-			return (1);
+		{
+			ft_printf("Error\nOpen map on line n°%d and column n°%d!\nThe chocolates will escape...\n", data->coords.x, n);
+			exit (1);
+		}
 		data->coords.x++;
 	}
-	return (0);
 }
 
-/* Checks if walls are present on line number n */
-int	ft_check_lines(t_data *data, int n)
+/* Checks if walls (1) are present on line number n */
+void	ft_check_lines(t_data *data, int n)
 {
 	data->coords.y = 0;
 	while (data->map.map[n][data->coords.y] != '\0')
 	{
 		if (data->map.map[n][data->coords.y] != '1')
-			return (1);
+		{
+			ft_printf("Error\nOpen map on line n°%d and column n°%d!\nThe chocolates will escape...\n", n, data->coords.y);
+			exit (1);
+		}
 		data->coords.y++;
 	}
-	return (0);
 }
 
 /* Checks if map contents is valid */
-int	ft_check_map_contents(t_data *data)
+void	ft_check_map_contents(t_data *data)
 {
 	data->coords.x = 0;
 	data->count.player = 0;
@@ -113,9 +128,8 @@ int	ft_check_map_contents(t_data *data)
 	if (data->count.player != 1 || data->count.exit != 1 || data->count.col < 1)
 	{
 		ft_printf("Error\nInvalid map!\n");
-		return (1);
+		exit (1);
 	}
-	return (0);
 }
 
 /* Handles image placement given arguments */
@@ -158,7 +172,6 @@ int	ft_put_images_to_map(t_data *data)
 		}
 		x++;
 	ft_open_exit(data);
-	//ft_check_col(data);
 	}
 	return (0);
 }

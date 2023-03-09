@@ -6,11 +6,10 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:56:10 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/02 19:02:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/09 19:18:48 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// regarder strerror et perror et exit
 // backtracking ?
 
 #include "../includes/so_long.h"
@@ -27,14 +26,12 @@ void	ft_put_score(t_data *data)
 	mlx_string_put(data->mlx, data->win, 80, 40, 0x00BFFF, final_text);
 	move_or_score = ft_itoa(data->count.score);
 	final_text = ft_strjoin("CHOCOLATES = ", move_or_score);
-	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, 80, 60, 0x5FFB17, final_text);
-	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, map_size_x / 7, 40, 0xDAEE01, "KARL IS HUNGRY...");
-	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, map_size_x / 5, 60, 0x5FFB17, "FEED HIM!");
 	free(move_or_score);
 	free(final_text);
+	ft_check_col(data);
 }
 
 /* Destroys images, windows and displays and frees memory */
@@ -49,7 +46,7 @@ void	ft_free(t_data *data)
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	//free(data->win);
+	//free(data->win); ??
 }
 
 /* Swaps a "ground" tile and the player position. New positions are given by the ft_key_press function and checks if the swap is possible or not */
@@ -72,7 +69,10 @@ void	ft_move(t_data *data, int new_x, int new_y)
 		data->map.map[cur_x][cur_y] = '0';
 		data->count.score++;
 		data->count.col--;
+		data->count.moves++;
 	}
+	else if (data->map.map[cur_x + new_x][cur_y + new_y] == 'E' && data->count.col == 0)
+		ft_game_success(data);
 	ft_put_images_to_map(data);
 }
 
@@ -94,7 +94,7 @@ int	ft_key_press(int keycode, t_data *data)
 	{
 		ft_printf("You quit the game!\n");
 		ft_free(data);
-		exit(0);
+		exit(1);
 	}
 	return (0);
 }
@@ -157,25 +157,26 @@ int	main(/* int argc, char **argv */)
 {
 	t_data	data;
 
-	/* if (argc != 2)
+	/* if (argc < 2)
 	{
-		ft_printf("Too many/few arguments!");
+		ft_printf("Error\nToo few arguments!");
+		return (0);
+	}
+	else if (argc > 2)
+	{
+		ft_printf("Error\nToo many arguments!");
 		return (0);
 	} */
 
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, map_size_x, map_size_y, "so_long");
-	if (ft_check_mlx(&data) == 1)
-		return (1);
-	ft_get_images(&data);
-	if (ft_check_images(&data) == 1)
-		return (1);
+	ft_check_all_mlx(&data);
 	ft_maps(&data);
-	if (ft_check_map_contents(&data) == 1)
-		return (1);
-	if (ft_check_map_format(&data) == 1)
-		return (1);
+	ft_check_map_contents(&data);
+	ft_check_map_format(&data);
+	ft_get_images(&data);
 	ft_put_images_to_map(&data);
+	ft_check_images(&data);
 	ft_put_score(&data);
 	data.count.moves = 0;
 	data.count.score = 0;

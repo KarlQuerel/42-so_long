@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:09:58 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/02 19:06:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/09 18:23:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,22 +92,26 @@ typedef struct	s_data {
 /* CHECK_MAPS.C */
 /* IMAGES.C */
 
-int	ft_check_images(t_data *data);
-int	ft_check_map_contents(t_data *data);
-int	ft_get_images(t_data *data);
+void	ft_check_all_mlx(t_data *data);
+void	ft_check_images(t_data *data);
+void	ft_check_map_contents(t_data *data);
+void	ft_get_images(t_data *data);
 void	ft_put_score(t_data *data);
 int	ft_key_press(int keycode, t_data *data);
 int	x_click(int keycode);
+void	ft_check_mlx_win(t_data *data);
 int	cross_close(t_data *data);
 int	ft_put_images_to_map(t_data *data);
 void	ft_free(t_data *data);
-int	ft_check_mlx(t_data *data);
-int	ft_check_map_format(t_data *data);
-int	ft_check_lines(t_data *data, int n);
-int	ft_check_columns(t_data *data, int n);
+void	ft_check_mlx(t_data *data);
+void	ft_check_map_format(t_data *data);
+void	ft_check_lines(t_data *data, int n);
+void	ft_check_columns(t_data *data, int n);
 void	ft_move(t_data *data, int new_x, int new_y);
 void	ft_check_col(t_data *data);
 void	ft_open_exit(t_data *data);
 void	ft_put_image(t_data *data, void *img, int x, int y);
+void	ft_check_rectangular(t_data *data);
+void	ft_game_success(t_data *data);
 
 #	endif

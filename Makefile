@@ -26,15 +26,18 @@ all: ${LIBFT} ${MLX} ${NAME}
 
 ${NAME}: ${OBJS}
 		${CC} ${C_FLAGS} -o ${NAME} ${OBJS} ${LIBFT} ${MLX} ${L_FLAGS}
-		@figlet COMPILED -f term -F border --gay
+		clear
+		@toilet COMPILED -F border -f future
 
 ${LIBFT}:
 		make -C ${PATH_LIBFT}
-		@figlet LIBFT -f term -F border --gay
+		clear
+		@toilet LIBFT -F border -f future
 
 ${MLX}:
 		make -C ${PATH_MLX}
-		@figlet MLX -f term -F border --gay
+		clear
+		@toilet MLX -F border -f future
 
 .c.o:
 	${CC} ${C_FLAGS} -c $< -o ${<:.c=.o} -I ${PATH_LIBFT} -I ${PATH_SRCS}
@@ -43,12 +46,14 @@ clean:
 		make -C ${PATH_LIBFT} clean
 		make -C ${PATH_MLX} clean
 		${RM} ${OBJS}
-		@figlet CLEANED -f term -F border --gay
+		clear
+		@toilet CLEAN -F border -f future
 
 fclean:	clean
 		make -C ${PATH_LIBFT} fclean
 		${RM} ${NAME}
-		@figlet F_CLEANED -f term -F border --gay
+		clear
+		@toilet FCLEAN -F border -f future
 
 re:	fclean all
 
