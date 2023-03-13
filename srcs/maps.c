@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 18:44:44 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/09 19:04:20 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/13 19:43:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ void	ft_check_map_format(t_data *data)
 	while (data->map.map[0][data->coords.y] != '\0')
 		data->coords.y++;
 	ft_check_rectangular(data);
+	ft_init_map_dup(data);
+	ft_get_player_pos(data, data->coords.x_player, data->coords.y_player); //si ca rend false c'est que la map est pas valide
 	ft_check_lines(data, 0);
 	ft_check_lines(data, data->coords.x - 1);
 	ft_check_columns(data, 0);
 	ft_check_columns(data, data->coords.y - 1);
 }
 
-// /* Checks if the map is rectangular */
-// takes the first row and column size and compare it to everything
+// /* Checks if the map is rectangular by comparing the first row size to the whole map */
 void	ft_check_rectangular(t_data *data)
 {
 	int	x;
@@ -71,6 +72,8 @@ void	ft_check_rectangular(t_data *data)
 		}
 		x++;
 	}
+	data->map.map_x = x;
+	data->map.map_y = y;
 }
 
 /* Checks if walls (1) are present on column number n */
@@ -103,7 +106,7 @@ void	ft_check_lines(t_data *data, int n)
 	}
 }
 
-/* Checks if map contents is valid */
+/* Checks if map contents (player, collectibles and exit) are valid */
 void	ft_check_map_contents(t_data *data)
 {
 	data->coords.x = 0;
@@ -116,7 +119,11 @@ void	ft_check_map_contents(t_data *data)
 		while (data->map.map[data->coords.x][data->coords.y] != '\0')
 		{
 			if (data->map.map[data->coords.x][data->coords.y] == 'P')
+			{
+				data->coords.x_player = data->coords.x;
+				data->coords.y_player = data->coords.y;
 				data->count.player++;
+			}
 			if (data->map.map[data->coords.x][data->coords.y] == 'E')
 				data->count.exit++;
 			if (data->map.map[data->coords.x][data->coords.y] == 'C')

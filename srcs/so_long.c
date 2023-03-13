@@ -6,11 +6,9 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:56:10 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/09 19:18:48 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/13 19:50:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// backtracking ?
 
 #include "../includes/so_long.h"
 
@@ -43,6 +41,8 @@ void	ft_free(t_data *data)
 	mlx_destroy_image(data->mlx, data->img.col_1);
 	mlx_destroy_image(data->mlx, data->img.exit_closed);
 	mlx_destroy_image(data->mlx, data->img.exit_open);
+	free(data->map.map_dup);
+	//free map.map
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
@@ -133,7 +133,7 @@ void    ft_maps(t_data *data)
 	char *line;
 	char *tmp; 
 
-	file = "maps/test.ber";
+	file = "maps/1.ber";
     fd = open(file, O_RDONLY);
     if (fd == -1)
     {

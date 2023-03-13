@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:09:58 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/09 18:23:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/13 19:22:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #	define S_K 115
 #	define DOWN_K 65364
 # 	define map_size_x 2000
-#	define map_size_y 2000
+#	define map_size_y 2000 //prendre la map size depuis la map ou get next line et ne pas oublier le +1
 
 #include "../minilbx/mlx.h"
 #include "../libft/libft.h"
@@ -58,6 +58,8 @@ typedef struct s_img {
 typedef struct s_coordinates {
 	int	x;
 	int	y;
+	int	x_player;
+	int	y_player;
 	int	x_exit;
 	int	y_exit;
 }	t_coords;
@@ -65,6 +67,9 @@ typedef struct s_coordinates {
 /* Struc for map */
 typedef struct s_map {
 	char	**map;
+	char	**map_dup;
+	unsigned int	map_x;
+	unsigned int	map_y;
 }	t_map;
 
 /* Struct for counts and indexes */
@@ -113,5 +118,7 @@ void	ft_open_exit(t_data *data);
 void	ft_put_image(t_data *data, void *img, int x, int y);
 void	ft_check_rectangular(t_data *data);
 void	ft_game_success(t_data *data);
+bool    ft_get_player_pos(t_data *data);
+void   ft_init_map_dup(t_data *data);
 
 #	endif

@@ -13,6 +13,7 @@ SRCS	= ${PATH_SRCS}/so_long.c	\
 		${PATH_SRCS}/maps.c	\
 		${PATH_SRCS}/check_errors.c \
 		${PATH_SRCS}/movement.c \
+		${PATH_SRCS}/backtracking.c \
 		
 OBJS	= ${SRCS:.c=.o}
 
