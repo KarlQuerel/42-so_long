@@ -13,7 +13,12 @@ SRCS	= ${PATH_SRCS}/so_long.c	\
 		${PATH_SRCS}/maps.c	\
 		${PATH_SRCS}/check_errors.c \
 		${PATH_SRCS}/movement.c \
-		${PATH_SRCS}/backtracking.c \
+		${PATH_SRCS}/flood_fill.c \
+		${PATH_SRCS}/exit.c \
+		${PATH_SRCS}/text.c \
+		${PATH_SRCS}/images.c \
+		${PATH_SRCS}/check_maps.c \
+		
 		
 OBJS	= ${SRCS:.c=.o}
 
@@ -41,7 +46,7 @@ ${MLX}:
 		@toilet MLX -F border -f future
 
 .c.o:
-	${CC} ${C_FLAGS} -c $< -o ${<:.c=.o} -I ${PATH_LIBFT} -I ${PATH_SRCS}
+	${CC} ${C_FLAGS} -c $< -o ${<:.c=.o}
 
 clean:
 		make -C ${PATH_LIBFT} clean
