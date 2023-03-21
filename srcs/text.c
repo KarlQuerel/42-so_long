@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 18:59:06 by kquerel           #+#    #+#             */
-/*   Updated: 2023/03/17 21:31:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/03/21 18:46:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	ft_put_score(t_data *data)
 	final_text = ft_strjoin("MOVES = ", move_or_score);
 	mlx_set_font(data->mlx, data->win, "10x20");
 	mlx_string_put(data->mlx, data->win, 2, 40, 0x00BFFF, final_text);
+	free (move_or_score);
+	free (final_text);
 	move_or_score = ft_itoa(data->count.score);
 	final_text = ft_strjoin("CHOCOLATES = ", move_or_score);
 	mlx_string_put(data->mlx, data->win, 82, 60, 0x5FFB17, final_text);

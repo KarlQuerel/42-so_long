@@ -9,7 +9,7 @@ MLX = ${PATH_MLX}/libmlx.a
 L_FLAGS	= -lX11 -lXext -lm
 
 PATH_SRCS	= srcs
-SRCS	= ${PATH_SRCS}/so_long.c	\
+SRCS	= ${PATH_SRCS}/main.c	\
 		${PATH_SRCS}/maps.c	\
 		${PATH_SRCS}/check_errors.c \
 		${PATH_SRCS}/movement.c \
@@ -18,6 +18,8 @@ SRCS	= ${PATH_SRCS}/so_long.c	\
 		${PATH_SRCS}/text.c \
 		${PATH_SRCS}/images.c \
 		${PATH_SRCS}/check_maps.c \
+		${PATH_SRCS}/check_maps_2.c \
+		${PATH_SRCS}/free.c \
 		
 		
 OBJS	= ${SRCS:.c=.o}
@@ -60,6 +62,11 @@ fclean:	clean
 		${RM} ${NAME}
 		clear
 		@toilet FCLEAN -F border -f future
+
+norminette:
+		norminette srcs
+		norminette includes
+		@toilet NORMINETTE -F border -f future
 
 re:	fclean all
 
