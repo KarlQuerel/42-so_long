@@ -33,10 +33,21 @@ The `so_long` project aims to introduce students to:
 - `gcc` compiler
 
 ## Installation
-1. Clone this repository to your local machine
-2. Navigate to the project directory
-3. Compile the program using `make`.
+1. Clone this repository to your local machine:
+	```sh
+	git clone https://github.com/KarlQuerel/42-so_long.git
+	```
 
+2. Navigate to the project directory:
+	```sh
+	cd so_long
+	```
+
+3. Compile the project using `make`:
+	```sh
+	make
+	```
+ 
 ## Usage
 To run the game, use the following command:
 ```bash
