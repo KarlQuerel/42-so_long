@@ -40,7 +40,7 @@ The `so_long` project aims to introduce students to:
 
 2. Navigate to the project directory:
 	```sh
-	cd so_long
+	cd 42-so_long
 	```
 
 3. Compile the project using `make`:
